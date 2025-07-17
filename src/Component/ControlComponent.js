@@ -3,6 +3,18 @@ import React, { Component } from "react";
 export default class ControlComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.clockify = this.clockify.bind(this);
+  }
+
+  clockify(val) {
+    let min = Math.floor(val / 60);
+    let sec = val % 60;
+    if (sec < 10) {
+      return min;
+    } else {
+      return min;
+    }
   }
   render() {
     return (
@@ -14,20 +26,38 @@ export default class ControlComponent extends Component {
           placeContent: "center",
         }}
       >
-        <div className="break-length">
-          <h2>Break Length</h2>
+        <div>
+          <h2 id="break-label">Break Length</h2>
           <div>
-            <button>Inc</button>
-            <span>5</span>
-            <button>Dec</button>
+            <button id="break-increment" onClick={this.props.breakIncrement}>
+              +
+            </button>
+            <span id="break-length">
+              {this.clockify(this.props.breakLength)}
+            </span>
+            <button id="break-decrement" onClick={this.props.breakDecrement}>
+              -
+            </button>
           </div>
         </div>
         <div className="session-length">
-          <h2>Session Length</h2>
+          <h2 id="session-label">Session Length</h2>
           <div>
-            <button>Inc</button>
-            <span>25</span>
-            <button>Dec</button>
+            <button
+              id="session-increment"
+              onClick={this.props.sessionIncrement}
+            >
+              +
+            </button>
+            <span id="session-length">
+              {this.clockify(this.props.sessionLength)}
+            </span>
+            <button
+              id="session-decrement"
+              onClick={this.props.sessionDecrement}
+            >
+              -
+            </button>
           </div>
         </div>
       </div>
