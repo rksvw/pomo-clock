@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import ControlComponent from "./Component/ControlComponent";
 import ClockComponent from "./Component/ClockComponent";
 import StartStopComponent from "./Component/StartStopComponent";
@@ -6,8 +6,8 @@ import StartStopComponent from "./Component/StartStopComponent";
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.sessionRef = React.createRef();
-    this.breakRef = React.createRef();
+    this.sessionRef = createRef();
+    this.breakRef = createRef();
 
     this.state = {
       timer: 1500,
@@ -120,8 +120,19 @@ export default class App extends Component {
       }, 1000);
     } else if (prevState.timer < -1) {
       console.log("below zero");
+      console.log(prevState.timer);
       clearInterval(this.breakRef.current);
       clearInterval(this.sessionRef.current);
+      this.setState({
+        timer: 1500,
+        sessionLength: 1500,
+        sessionRunning: false,
+        startStop: "Start",
+        label: "Session",
+        breakLength: 300,
+        ticker: false,
+        breakRunning: false,
+      });
     }
   }
 
