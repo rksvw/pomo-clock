@@ -3,6 +3,9 @@ import React, { Component } from "react";
 export default class StartStopComponent extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      hello: "Hello world",
+    };
   }
   render() {
     return (

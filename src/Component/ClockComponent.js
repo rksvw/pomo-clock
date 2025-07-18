@@ -29,7 +29,7 @@ export default class ClockComponent extends Component {
     } else {
       // Else : Case
       // Return timer in form of min:sec i.e. -> 07:07
-      return `0${min}:0${sec}`;
+      return "0" + min + ":" + "0" + sec;
     }
   }
 
