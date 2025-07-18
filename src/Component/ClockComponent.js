@@ -35,10 +35,40 @@ export default class ClockComponent extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          borderTop: "2px solid black",
+          padding: "10px",
+        }}
+      >
         <div>
-          <h2 id="timer-label">{this.props.label}</h2>
-          <div id="time-left">{this.clockify(this.props.timer)}</div>
+          <h2
+            id="timer-label"
+            style={{
+              fontSize: "24px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {this.props.label}
+          </h2>
+          <div
+            id="time-left"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "80px",
+              fontWeight: "600",
+            }}
+          >
+            {this.clockify(this.props.timer)}
+          </div>
         </div>
       </div>
     );

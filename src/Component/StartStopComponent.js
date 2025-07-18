@@ -6,11 +6,33 @@ export default class StartStopComponent extends Component {
   }
   render() {
     return (
-      <div>
-        <button id="start_stop" onClick={this.props.handleStart}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingBottom: "15px",
+          gap: "10px",
+        }}
+      >
+        <button
+          id="start_stop"
+          style={{
+            padding: "5px 10px",
+            fontSize: "24px",
+          }}
+          onClick={this.props.handleStart}
+        >
           Start
         </button>
-        <button id="reset" onClick={this.props.handleReset}>
+        <button
+          style={{
+            padding: "5px 10px",
+            fontSize: "24px",
+          }}
+          id="reset"
+          onClick={this.props.handleReset}
+        >
           Reset
         </button>
       </div>

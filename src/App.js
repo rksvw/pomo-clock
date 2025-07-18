@@ -270,11 +270,22 @@ export default class App extends Component {
         style={{
           display: "grid",
           gridTemplateRows: "repeat(3, 1fr)",
-          width: "50vw",
+          width: "60vw",
           height: "50vh",
+          border: "2px solid black",
         }}
       >
-        <h1>25 + 5 Timer</h1>
+        <h1
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            borderBottom: "2px solid black",
+          }}
+        >
+          25 + 5 Timer
+        </h1>
         {/* Control Component ->
         ! Updating of break and Session Timer
          */}
