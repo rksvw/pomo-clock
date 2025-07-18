@@ -31,6 +31,11 @@ export default class App extends Component {
   }
 
   handleStart() {
+    // If session is not running i.e. Start new Session or Continue the Session where it left on
+    // Start Session Interval : Call every 1 sec -> 1000 ms
+    // Runs Infinitely until the [ComponentDidUpdate] function specific condition is met
+    // SetState : Update states of timer and sessionLength
+
     if (this.state.sessionRunning !== true && this.state.ticker !== true) {
       console.log(this.sessionRef.current + "Start sessionRef");
 
@@ -46,6 +51,10 @@ export default class App extends Component {
         });
       }, 1000);
     } else if (this.state.breakRunning === true) {
+      // If Same handleStart Clicked
+      // And Break is True
+      // Pause the Timer : Stop Break Interval
+      // Set State : "Start" : false -> break
       console.log(this.breakRef.current + "Pause breakRef");
       clearInterval(this.breakRef.current);
       this.setState({
@@ -53,6 +62,10 @@ export default class App extends Component {
         breakRunning: false,
       });
     } else if (this.state.ticker === true && this.state.breakRunning !== true) {
+      // If Same handleStart Clicked
+      // And Ticker is True and Break is False
+      // Start break Interval or Contiue the previous Break Interval
+      // Set State : Update Timer
       console.log(this.breakRef.current + "Continue breakRef");
       this.breakRef.current = setInterval(() => {
         this.setState((prev) => {
@@ -63,6 +76,10 @@ export default class App extends Component {
         });
       }, 1000);
     } else {
+      // If Same handleStart Clicked
+      // And Session is True
+      // Pause the Timer : Stop Session Interval
+      // Set State : "Start" : false -> Session
       console.log(this.sessionRef.current + "Clear session Ref");
       clearInterval(this.sessionRef.current);
       this.setState({
@@ -72,11 +89,17 @@ export default class App extends Component {
     }
   }
 
+  // Called after everyTime State changes
   componentDidUpdate(prevProps, prevState) {
+    // If Timer is 0 and [session] is true
+    // Here Beep the Audio
+    // SetState for break
+    // Clear the Session
+    // Start Break Interaval
     if (prevState.timer === 0 && prevState.sessionRunning === true) {
-      console.log("Clear session and start breakRef");
       this.audioBeep.play();
       this.audioBeep.currentTime = 0;
+
       this.setState(() => {
         return {
           timer: this.state.breakLength,
@@ -85,6 +108,7 @@ export default class App extends Component {
       });
 
       clearInterval(this.sessionRef.current);
+
       this.breakRef.current = setInterval(() => {
         this.setState((prev) => {
           return {
@@ -96,6 +120,11 @@ export default class App extends Component {
         });
       }, 1000);
     } else if (prevState.timer === 0 && prevState.ticker === true) {
+      // if Timer is 0 and [Ticker] is true
+      // Beep Audio
+      // Clear Break Interval
+      // setState for Session
+      // Start Session Interval
       console.log(this.breakRef.current + "BINGO");
       this.audioBeep.play();
       this.audioBeep.currentTime = 0;
@@ -119,6 +148,10 @@ export default class App extends Component {
         });
       }, 1000);
     } else if (prevState.timer < -1) {
+      // If Timer is [!negative Integer]
+      // Stop Session Interval
+      // Stop Break Interval
+      // Set State to Default : State
       console.log("below zero");
       console.log(prevState.timer);
       clearInterval(this.breakRef.current);
@@ -137,6 +170,11 @@ export default class App extends Component {
   }
 
   handleReset() {
+    // If Reset Clicked
+    // Stop Break Interval
+    // Stop Session Interval
+    // Stop Audio Beep Sound
+    // Set State : Default
     clearInterval(this.sessionRef.current);
     clearInterval(this.breakRef.current);
     this.audioBeep.pause();
@@ -154,11 +192,15 @@ export default class App extends Component {
   }
 
   breakIncrement() {
+    // If Break Limit Exceded : 60 Min -> 3600 s
+    // Update : State Stop
     if (this.state.breakLength === 3600) {
       this.setState({
         breakLength: 3600,
       });
     } else {
+      // Else
+      // Update : State Continue
       this.setState((prev) => {
         return { breakLength: prev.breakLength + 60 };
       });
@@ -166,11 +208,15 @@ export default class App extends Component {
   }
 
   breakDecrement() {
+    // If Break Limit Exceded : 1 min -> 60 s
+    // Update : State Stop
     if (this.state.breakLength === 60) {
       this.setState({
         breakLength: 60,
       });
     } else {
+      // Else
+      // Update : State Continue
       this.setState((prev) => {
         return {
           breakLength: prev.breakLength - 60,
@@ -180,12 +226,16 @@ export default class App extends Component {
   }
 
   sessionIncrement() {
+    // If Session Limit Exceded : 60 min -> 3600 s
+    // Update : State Stop
     if (this.state.sessionLength === 3600) {
       this.setState({
         sessionLength: 3600,
         timer: 3600,
       });
     } else {
+      // Else
+      // Update : State Continue
       this.setState((prev) => {
         return {
           sessionLength: prev.sessionLength + 60,
@@ -196,12 +246,16 @@ export default class App extends Component {
   }
 
   sessionDecrement() {
+    // If Session Limit Exceded : 1 min -> 60 s
+    // Update : State Stop
     if (this.state.sessionLength === 60) {
       this.setState({
         sessionLength: 60,
         timer: 60,
       });
     } else {
+      // Else
+      // Update : State Continue
       this.setState((prev) => {
         return {
           sessionLength: prev.sessionLength - 60,
@@ -221,6 +275,9 @@ export default class App extends Component {
         }}
       >
         <h1>25 + 5 Timer</h1>
+        {/* Control Component ->
+        ! Updating of break and Session Timer
+         */}
         <ControlComponent
           sessionLength={this.state.sessionLength}
           breakLength={this.state.breakLength}
@@ -231,12 +288,21 @@ export default class App extends Component {
           timer={this.state.timer}
           remove={this.setState.remove}
         />
+        {/* Clock Component ->
+        ! Session and Break Interval Timer : Count
+         */}
         <ClockComponent timer={this.state.timer} label={this.state.label} />
+        {/* StartStop Component ->
+        ! Pause ? Start : Stop and Reset -> the Clock Timer to Default
+         */}
         <StartStopComponent
           handleStart={this.handleStart}
           handleReset={this.handleReset}
           startStop={this.state.startStop}
         />
+        {/* Audio Component ->
+        ! AudioBeep Reference to Beep Audio After Time exceeded to Zero
+         */}
         <audio
           id="beep"
           preload="auto"

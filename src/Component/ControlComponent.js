@@ -8,11 +8,16 @@ export default class ControlComponent extends Component {
   }
 
   clockify(val) {
+    //  Find minute and second using value
     let min = Math.floor(val / 60);
     let sec = val % 60;
+    // If Second is less than 10
     if (sec < 10) {
+      // Return min
       return min;
     } else {
+      // Either Case
+      // Return min
       return min;
     }
   }
